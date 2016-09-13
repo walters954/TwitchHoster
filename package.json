@@ -1,0 +1,14 @@
+{
+  "name": "twitchhoster",
+  "version": "1.0.0",
+  "description": "Automatic hosting of from list of users when you are not online.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Warren Walters",
+  "license": "ISC",
+  "dependencies": {
+    "tmi.js": "^1.1.1"
+  }
+}
