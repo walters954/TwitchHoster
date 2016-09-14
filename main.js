@@ -1,4 +1,7 @@
 var tmi = require('tmi.js');
+var request = require('request');
+
+findActiveChannelForSpecificUser("Parkin954,trick2g,EJipt");
 
 
 function hostChannel(user,gettingHosted)
@@ -28,19 +31,36 @@ function hostChannel(user,gettingHosted)
   client.disconnect();
 }
 
-function findActiveChannelForSpecificUser()
+function findActiveChannelForSpecificUser(user)
 {
   var parameters = [
         'limit=100',
-        'stream_type=live',
-        'client_id=' + clientId
+        'stream_type=live'
     ];
+
+
+    request('https://api.twitch.tv/kraken/streams?channel=' + user + "?" + parameters.join("&"), function(error, response, body) {
+            body = JSON.parse(body);
+            console.log(body.streams[0]);
+            //if(body.stream.channel.name) {
+              //console.log(body.stream.channel.name)
+
+            //}
+            //for (streamName in body.)
+            //{
+
+            //}
+            for (i = 0; i < body._total; i ++)
+            {
+              console.log(body.streams[i].channel.name);
+            }
+          });
 
 }
 
 
 //browser extention maybe ***
-var users = {[
+/*var users = {[
   username: "YungYungerbot",
   password: "oauth:brf2s0b12cye9ny1nu6w7jh4kchavu",
   userList:[
@@ -53,4 +73,4 @@ var users = {[
       priority: 2
     }
   ]
-]}
+]}*/
