@@ -1,7 +1,16 @@
 var tmi = require('tmi.js');
 var request = require('request');
 
-findActiveChannelForSpecificUser("Parkin954,trick2g,EJipt");
+var testStreamerToHostList =['parkin954','trick2g','EJipt','AustenMarie','Enviosity']
+
+
+var parameters = [
+      'limit=100',
+      'client_id=fht2ha0nr9qgth11pg3qq30fxjrlsje',
+      'stream_type=live'
+  ];
+//findActiveChannelForSpecificUser(testStreamerToHostList);
+checkHostIsOnline(testStreamerToHostList);
 
 
 function hostChannel(user,gettingHosted)
@@ -31,31 +40,45 @@ function hostChannel(user,gettingHosted)
   client.disconnect();
 }
 
-function findActiveChannelForSpecificUser(user)
+function findActiveChannelForSpecificUser(users)
 {
-  var parameters = [
-        'limit=100',
-        'stream_type=live'
-    ];
-
-
-    request('https://api.twitch.tv/kraken/streams?channel=' + user + "?" + parameters.join("&"), function(error, response, body) {
+  hostersList +='&';
+    request('https://api.twitch.tv/kraken/streams?channel=' + users + "?" + parameters.join("&"), function(error, response, body) {
             body = JSON.parse(body);
-            console.log(body.streams[0]);
-            //if(body.stream.channel.name) {
-              //console.log(body.stream.channel.name)
-
-            //}
-            //for (streamName in body.)
-            //{
-
-            //}
             for (i = 0; i < body._total; i ++)
             {
               console.log(body.streams[i].channel.name);
+
             }
+
           });
 
+}
+
+function checkHostIsOnline(hostersList)
+{
+
+    hostersList +='&';
+
+    hostersList = hostersList.toLowerCase();
+
+    request('https://api.twitch.tv/kraken/streams?channel=' + hostersList + "?" + parameters.join("&"), function(error, response, body) {
+            body = JSON.parse(body);
+            for (i = 0; i < body._total; i ++)
+            {
+
+              if(hostersList.indexOf(body.streams[i].channel.name) == -1)
+              {
+                console.log('found person indexof is offline', body.streams[i].channel.name)
+              }
+
+              for (x = 0; x < hostersList.length; x++)
+              {
+                console.log(x);
+              }
+            }
+
+          });
 }
 
 
