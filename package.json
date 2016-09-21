@@ -9,6 +9,7 @@
   "author": "Warren Walters",
   "license": "ISC",
   "dependencies": {
+    "request-promise": "^4.1.1",
     "tmi.js": "^1.1.1"
   }
 }
