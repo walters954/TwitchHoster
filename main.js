@@ -265,29 +265,69 @@ function promiseTest(nhostersList)
 
 
 
-function doSomething() {
-        return new Promise(function (resolve) {
-            var value = 1;
-            resolve(value);
-        });
-    }
+function testPromises()
+{
+
+  var firstMethod = function(val) {
+  var promise = new Promise(function(resolve, reject) {
+    setTimeout(function() {
+      console.log('first method completed', val);
+      resolve(val);
+    }, 2000);
+  });
+  return promise;
+};
 
 
-    function doSomething2(){
-        return 2;
-    };
+var secondMethod = function(someStuffs) {
+  var promise = new Promise(function(resolve, reject) {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open("GET", 'https://mobile.fmcsa.dot.gov/qc/services/carriers/458864.json?webKey=b0aa9dd802d64865f3dd66821d4692fd2b23a0a8', false);
 
-    function doSomething3(){
-        return 3;
-    };
+      xmlHttp.send(null);
+      someStuffs = JSON.parse(xmlHttp.responseText).content.carrier.totalPowerUnits;
 
 
-    doSomething().then(function(firstResult){
-         console.log(firstResult)
-         return doSomething2(); // this could also return a promise over an async value
-    }).then(function(secondResult){
-         console.log(secondResult); // alerts 2
-         return doSomething3();
-    }).then(function(thirdResult){
-         console.log(thirdResult);
-    });
+
+      console.log('second method completed', someStuffs);
+      resolve(someStuffs);
+  });
+  return promise;
+};
+
+var thirdMethod = function(someStuff) {
+
+var resolveArray = [];
+  var promise = new Promise(function(resolve, reject) {
+    setTimeout(function() {
+
+
+function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return JSON.parse(xmlHttp.responseText).content.carrier.totalPowerUnits;
+}
+
+someStuff = httpGet('https://mobile.fmcsa.dot.gov/qc/services/carriers/458864.json?webKey=b0aa9dd802d64865f3dd66821d4692fd2b23a0a8') +someStuff;
+
+for (i = 0; i < 3; i++)
+{
+resolveArray.push(httpGet('https://mobile.fmcsa.dot.gov/qc/services/carriers/45886'+i+'.json?webKey=b0aa9dd802d64865f3dd66821d4692fd2b23a0a8'));
+
+}
+      console.log('third method completed', someStuff);
+      console.log('resolve array', resolveArray )
+      resolve(someStuff);
+    }, 3000);
+  });
+  return promise;
+};
+
+var inputdate = 1;
+
+firstMethod(inputdate)
+  .then(secondMethod)
+  .then(thirdMethod)
+}
